@@ -20,21 +20,21 @@ export async function getProducts(req, res) {
     }
 }
 
-// export async function getProduct(req, res) {
-//     try {
-//         const id = req.params.id;
-//         if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-//             return res.status(400).json({ message: 'Invalid ID' });
-//         }
-//
-//         const product = await Product.findById(id).lean();
-//         if (!product) {
-//             return res.status(404).json({ message: 'Not found' });
-//         }
-//
-//         res.json(product);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Server error' });
-//     }
-// }
+ export async function getProduct(req, res) {
+    try {
+         const id = req.params.id;
+        if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+             return res.status(400).json({ message: 'Invalid ID' });
+         }
+
+         const product = await Product.findById(id).lean();
+         if (!product) {
+             return res.status(404).json({ message: 'Not found' });
+         }
+
+         res.json(product);
+     } catch (error) {
+         console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+ }
