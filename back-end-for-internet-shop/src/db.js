@@ -1,18 +1,14 @@
-import { MongoClient } from 'mongodb';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-const MONGO_CONNECTION = process.env.MONGO_CONNECTION;
-const client = new MongoClient(MONGO_CONNECTION);
-
-export let db;
+import mongoose from 'mongoose';
 
 export async function dbConnect() {
-    if (!db) {
-        await client.connect();
-        db = client.db('sample_mflix');
-        console.log('Connected to MongoDB');
+    try {
+        await mongoose.connect(process.env.MONGO_CONNECTION, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log(' Connected to MongoDB via Mongoose');
+    } catch (err) {
+        console.error(' MongoDB connection error:', err);
+        process.exit(1);
     }
-    return db;
 }

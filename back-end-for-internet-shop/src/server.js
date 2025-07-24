@@ -1,69 +1,37 @@
 import express from 'express';
 import cors from 'cors';
-import { fileURLToPath } from 'url';
 import path from 'path';
-import session from 'express-session';
+import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
-import {dbConnect} from "./db.js";
-import {getAllProductsWithCursor, getProductById} from "../services/productsServices.js";
+import session from 'express-session';
+import { fileURLToPath } from 'url';
+import { dbConnect } from './db.js';
 
-const PORT = 4000;
+import productsRouter from '../routes/api/products.js';
+
+dotenv.config();
+
+const PORT = process.env.PORT || 4000;
 const app = express();
-
-async function startServer() {
-    try {
-        await dbConnect();
-
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
-        });
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, '../views'));
-app.use(express.static(path.join(__dirname, '../public')));
+
+app.use(cors({ origin: true, credentials: true }));
+app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-    origin: true,
-}));
-app.use(express.urlencoded({ extended: true }));
 app.use(session({
     secret: 'secret-key',
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
+    saveUninitialized: true
 }));
-app.use(express.json());
+
+app.use(express.static(path.join(__dirname, '../public')));
 
 
-app.get('/products', async (req, res) => {
-    try {
-        const { category, sort } = req.query;
-        const products = await getAllProductsWithCursor(category, sort);
-        res.render('products', { products, category, sort });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error when receiving products');
-    }
+app.use('/api/products', productsRouter);
+
+await dbConnect();
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
-
-app.get('/products/:id', async (req, res) => {
-    try {
-        const product = await getProductById(req.params.id);
-        if (!product) return res.status(404).send('Products not found');
-        res.render('product', { product });
-    } catch (err) {
-        console.error('Error when receiving articles', err);
-        res.status(500).send('Error server');
-    }
-});
-
-
-
-startServer();
