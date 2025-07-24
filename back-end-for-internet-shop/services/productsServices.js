@@ -1,7 +1,6 @@
-import {db } from '../src/db.js';
-import { ObjectId } from 'mongodb';
+import { Product } from '../models/Product.js';
 
-export async function getAllProductsWithCursor(category, sort) {
+export async function getAllProducts(category, sort) {
     const filter = {};
     if (category) filter.category = category;
 
@@ -9,21 +8,10 @@ export async function getAllProductsWithCursor(category, sort) {
     if (sort === 'asc') sortOption.price = 1;
     if (sort === 'desc') sortOption.price = -1;
 
-    const cursor = db.collection('products')
-        .find(filter)
-        .sort(sortOption);
-
-    const products = [];
-    for await (const product of cursor) {
-        products.push(product);
-    }
-
-    return products;
+    return await Product.find(filter).sort(sortOption).lean();
 }
 
 export async function getProductById(id) {
-    const { ObjectId } = await import('mongodb');
-    if (!ObjectId.isValid(id)) return null;
-
-    return db.collection('products').findOne({ _id: new ObjectId(id) });
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) return null;
+    return await Product.findById(id).lean();
 }
