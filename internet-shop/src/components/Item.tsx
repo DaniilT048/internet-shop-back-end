@@ -1,21 +1,20 @@
 import { useParams } from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import products from '../data/products';
-import type { Product } from '../types/Product';
 import Container from "react-bootstrap/Container";
 import {addToCart} from "../store/cartSlice.ts";
 import Button from "react-bootstrap/Button";
 import ModalCart from "./ModalCart.tsx";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import type {RootState} from "../store/store.ts";
 
 const Item = () => {
     const dispatch = useDispatch();
     const [modalShow, setModalShow] = useState(false);
     const { id } = useParams<{ id: string }>();
+    const products = useSelector((state: RootState) => state.products.items);
 
-    const product: Product | undefined = products.find(
-        (p) => p.id === parseInt(id || '', 10)
-    );
+
+    const product = products.find(p => p._id === id);
 
     useEffect(() => {
         if (product) {
