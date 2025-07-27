@@ -89,7 +89,9 @@ a {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     transition: transform var(--transition), box-shadow var(--transition);
     cursor: pointer;
+    flex: 0 0 300px;
 }
+
 .shopCard:hover {
     transform: translateY(-8px) scale(1.03);
     box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);

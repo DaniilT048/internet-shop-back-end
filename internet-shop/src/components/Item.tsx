@@ -32,7 +32,7 @@ const Item = () => {
                             src={`http://localhost:4000/${product.image}`}
                             alt={product.name}
                             className="img-fluid rounded shadow-lg"
-                            style={{ transition: "transform 0.3s" }}
+                            style={{ transition: "transform 0.3s", height: '500px', objectFit: 'contain' }}
                             onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.05)")}
                             onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
                             data-bs-toggle="modal"

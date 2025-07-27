@@ -17,7 +17,7 @@ function ShopCard({ product }: ProductProps): JSX.Element {
     return (
         <Card className="shopCard">
             <Link to={`/products/${product._id}`}>
-            <Card.Img variant="top" src={`http://localhost:4000/${product.image}`} alt={product.name} />
+            <Card.Img variant="top" src={`http://localhost:4000/${product.image}`} alt={product.name} style={{ height: '200px', objectFit: 'contain' }}  />
             </Link>
             <Card.Body className="text-center">
                 <Link to={`/products/${product._id}`}>
