@@ -26,23 +26,57 @@ const Item = () => {
     if (!product) return <h2>Product not found</h2>;
 
     return (
-        <Container className="text-center">
-            <div className="card bg-info">
-                <div>
-                    <img src={`.${product.image}`} className="card-img-top" alt={product.description}  style={{width: '300px', }}/>
+        <div className="container my-5">
+            <div className="row g-5">
+                <div className="col-md-6">
+                    <div className="position-relative">
+                        <img
+                            src={`.${product.image}`}
+                            alt={product.name}
+                            className="img-fluid rounded shadow-lg"
+                            style={{ transition: "transform 0.3s" }}
+                            onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.05)")}
+                            onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
+                            data-bs-toggle="modal"
+                            data-bs-target="#imageModal"
+                        />
+                    </div>
                 </div>
-                <div className="card-body">
-                    <h5 className="card-title">{product.name}</h5>
-                    <p className="card-text">About product: {product.description}</p>
-                    <p className="card-text text-body-secondary">${product.price}</p>
-                    <Button variant="success" onClick={() => dispatch(addToCart(product.id)) && setModalShow(true)}>Add to Cart</Button>
-                    <ModalCart
-                        show={modalShow}
-                        onHide={() => setModalShow(false)}
-                    />
+                <div className="col-md-6">
+                    <h1 className="display-5 fw-bold">{product.name}</h1>
+                    <p className="text-muted">{product.category}</p>
+                    <p className="fs-4 fw-semibold text-success">${product.price}</p>
+                    <p className="lead">{product.description}</p>
+
+                    <div className="d-flex gap-3 mt-4">
+                        <button className="btn btn-dark btn-lg shadow-sm" onClick={() => dispatch(addToCart(product.id)) && setModalShow(true)}>
+                            <i className="bi bi-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
                 </div>
             </div>
-        </Container>
+
+            <div
+                className="modal fade"
+                id="imageModal"
+                tabIndex={-1}
+                aria-labelledby="imageModalLabel"
+                aria-hidden="true"
+            >
+                <div className="modal-dialog modal-dialog-centered modal-lg">
+                    <div className="modal-content bg-dark">
+                        <div className="modal-body p-0">
+                            <img src={`.${product.image}`} className="img-fluid w-100" alt="Zoom" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ModalCart
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+            />
+        </div>
+
     );
 };
 

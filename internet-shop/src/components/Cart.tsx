@@ -26,12 +26,12 @@ const Cart = () => {
                     <p>Your cart is empty</p>
                 ) : (
                     <>
-                        {cartItems.map(({ id, quantity }) => {
-                            const product = getProduct(id);
-                            if (!product) return null; // если товара нет — не рендерим
+                        {cartItems.map(({ _id, quantity }) => {
+                            const product = getProduct(_id);
+                            if (!product) return null;
 
                             return (
-                                <Col key={id} className="m-3">
+                                <Col key={_id} className="m-3">
                                     <Link to={`/products/${product._id}`}>
                                         <img src={product.image} alt={product.description} height="250" />
                                         <h4>{product.name}</h4>
