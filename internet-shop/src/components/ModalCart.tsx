@@ -19,10 +19,10 @@ const Cart = (props: CartProps) => {
     const products = useSelector((state: RootState) => state.products.items);
 
 
-    const getProduct = (id: number) => products.find((p) => p.id === id);
+    const getProduct = (_id: number) => products.find((p) => p._id === _id);
 
     const total = cartItems.reduce((sum, item) => {
-        const product = getProduct(item.id);
+        const product = getProduct(item._id);
         if (!product) return sum;
         return sum + item.quantity * product.price;
     }, 0);

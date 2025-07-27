@@ -1,8 +1,6 @@
 import { useParams } from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import Container from "react-bootstrap/Container";
 import {addToCart} from "../store/cartSlice.ts";
-import Button from "react-bootstrap/Button";
 import ModalCart from "./ModalCart.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../store/store.ts";
@@ -31,7 +29,7 @@ const Item = () => {
                 <div className="col-md-6">
                     <div className="position-relative">
                         <img
-                            src={`.${product.image}`}
+                            src={`http://localhost:4000/${product.image}`}
                             alt={product.name}
                             className="img-fluid rounded shadow-lg"
                             style={{ transition: "transform 0.3s" }}
@@ -49,7 +47,7 @@ const Item = () => {
                     <p className="lead">{product.description}</p>
 
                     <div className="d-flex gap-3 mt-4">
-                        <button className="btn btn-dark btn-lg shadow-sm" onClick={() => dispatch(addToCart(product.id)) && setModalShow(true)}>
+                        <button className="btn btn-dark btn-lg shadow-sm" onClick={() => dispatch(addToCart(product._id)) && setModalShow(true)}>
                             <i className="bi bi-cart-plus"></i> Add to Cart
                         </button>
                     </div>

@@ -10,10 +10,10 @@ const Cart = () => {
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const products = useSelector((state: RootState) => state.products.items);
 
-    const getProduct = (id: number) => products.find(p => p.id === id);
+    const getProduct = (_id: number) => products.find(p => p._id === _id);
 
     const total = cartItems.reduce((sum, item) => {
-        const product = getProduct(item.id);
+        const product = getProduct(item._id);
         if (!product) return sum;
         return sum + item.quantity * product.price;
     }, 0);
@@ -33,15 +33,15 @@ const Cart = () => {
                             return (
                                 <Col key={_id} className="m-3">
                                     <Link to={`/products/${product._id}`}>
-                                        <img src={product.image} alt={product.description} height="250" />
+                                        <img src={`http://localhost:4000/${product.image}`} alt={product.description} height="250" />
                                         <h4>{product.name}</h4>
                                     </Link>
                                     <p>Quantity: {quantity}</p>
                                     <p>Price: ${product.price}</p>
                                     <p>Subtotal: ${(quantity * product.price).toFixed(2)}</p>
-                                    <Button className="m-3" variant="danger" onClick={() => dispatch(decrementQty(id))}>-</Button>
-                                    <Button className="m-3" variant="success" onClick={() => dispatch(incrementQty(id))}>+</Button>
-                                    <Button className="m-3" variant="warning" onClick={() => dispatch(removeFromCart(id))}>Remove</Button>
+                                    <Button className="m-3" variant="danger" onClick={() => dispatch(decrementQty(_id))}>-</Button>
+                                    <Button className="m-3" variant="success" onClick={() => dispatch(incrementQty(_id))}>+</Button>
+                                    <Button className="m-3" variant="warning" onClick={() => dispatch(removeFromCart(_id))}>Remove</Button>
                                 </Col>
                             );
                         })}

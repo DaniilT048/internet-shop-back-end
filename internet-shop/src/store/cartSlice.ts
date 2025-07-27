@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 type CartItem = {
-    id: number;
+    _id: number;
     quantity: number;
 }
 
@@ -21,29 +21,29 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         addToCart: (state, action: PayloadAction<number>) => {
-            const existingCart = state.items.find(item => item.id === action.payload);
+            const existingCart = state.items.find(item => item._id === action.payload);
             if (existingCart) {
                 existingCart.quantity++
                 console.log(existingCart.quantity);
 
             }else{
-                state.items.push({id: action.payload, quantity: 1});
+                state.items.push({_id: action.payload, quantity: 1});
             }
             localStorage.setItem("cart", JSON.stringify(state.items));
         },
         removeFromCart: (state, action: PayloadAction<number>) => {
-                state.items = state.items.filter(item => item.id !== action.payload);
+                state.items = state.items.filter(item => item._id !== action.payload);
                 localStorage.setItem("cart", JSON.stringify(state.items));
         },
         incrementQty: (state, action: PayloadAction<number>) => {
-            const item = state.items.find(item => item.id === action.payload);
+            const item = state.items.find(item => item._id === action.payload);
             if (item) {
                 item.quantity++;
                 localStorage.setItem("cart", JSON.stringify(state.items));
             }
         },
         decrementQty: (state, action: PayloadAction<number>) => {
-            const item = state.items.find(item => item.id === action.payload);
+            const item = state.items.find(item => item._id === action.payload);
             if (item && item.quantity > 1) {
                 item.quantity--;
                 localStorage.setItem("cart", JSON.stringify(state.items));
