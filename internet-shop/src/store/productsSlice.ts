@@ -8,7 +8,7 @@ export const fetchProducts = createAsyncThunk(
         if (params.category) query.append('category', params.category);
         if (params.sort) query.append('sort', params.sort);
 
-        const response = await axios.get(`http://localhost:4000/api/products`);
+        const response = await axios.get(`http://localhost:4000/api/products?${query.toString()}`);
         console.log('Response data:', response.data);
         return response.data;
     }

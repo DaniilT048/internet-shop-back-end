@@ -4,7 +4,11 @@ export async function getProducts(req, res) {
     try {
         const { category, sort } = req.query;
 
-        const filter = category ? { category } : {};
+        const filter = {};
+        if (category) {
+            filter.category = { $regex: new RegExp(`^${category}$`, 'i') };
+        }
+
         const sortOption = sort === 'asc' ? { price: 1 } : sort === 'desc' ? { price: -1 } : {};
 
         const products = await Product.find(filter).sort(sortOption).lean();
