@@ -4,6 +4,7 @@ import About from "./components/About.tsx";
 import Products from "./components/Products.tsx";
 import Cart from "./components/Cart.tsx";
 import Item from "./components/Item.tsx";
+import Register from "./components/Register.tsx";
 
 
 
@@ -41,6 +42,11 @@ routes = [
         element: <Cart/>,
         label: "Cart",
     },
-];
+    {
+        path: "/register",
+        element: <Register/>,
+        label: "Register",
+    },
+    ];
 
 export default routes;

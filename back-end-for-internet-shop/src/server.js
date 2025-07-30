@@ -6,8 +6,9 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import { fileURLToPath } from 'url';
 import { dbConnect } from './db.js';
+import products from "../routes/api/products.js";
+import register from "../routes/api/register.js";
 
-import productsRouter from '../routes/api/products.js';
 
 dotenv.config();
 
@@ -29,9 +30,8 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, '../public/images')));
 
 
-
-app.use('/', productsRouter);
-
+app.use('/', products);
+app.use('/', register);
 
 await dbConnect();
 app.listen(PORT, () => {
