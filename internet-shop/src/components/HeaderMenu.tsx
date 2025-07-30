@@ -8,11 +8,13 @@ import {Link, NavLink} from "react-router";
 import {BsCart4} from "react-icons/bs";
 import {useSelector} from "react-redux";
 import {Badge, Offcanvas} from 'react-bootstrap';
-
+import type {RootState} from '../store/store';
 
 function HeaderMenu(): JSX.Element {
-    const cartItems = useSelector((state: any) => state.cart.items);
+    const cartItems = useSelector((state: RootState) => state.cart.items);
     const totalQuantity = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
+    const user = useSelector((state: RootState) => state.auth.user);
+
     return (
         <Navbar className="mb-5"
             expand="lg"
@@ -69,6 +71,25 @@ function HeaderMenu(): JSX.Element {
                                     </Badge>
                                 )}
                             </Nav.Link>
+                            {user ? (
+                                <>
+                                    <Nav.Link as={NavLink} to="/profile">
+                                        {user ? (
+                                            <img
+                                                alt="avatar"
+                                                width={30}
+                                                height={30}
+                                                className="rounded-circle"
+                                            />
+                                        ) : (
+                                            'Profile'
+                                        )}
+                                    </Nav.Link>
+                                    <Nav.Link as={NavLink} to="/logout">logout</Nav.Link>
+                                </>
+                            ) : (
+                                <Nav.Link as={NavLink} to="/login">login</Nav.Link>
+                            )}
                         </Nav>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
@@ -79,11 +100,3 @@ function HeaderMenu(): JSX.Element {
 
 export default HeaderMenu;
 
-//
-//     {routes.map((route: RoutesType): ReactNode[] => (
-//         {route.label
-//                 ?  <Nav.Link key={route.path} as={NavLink} to={route.path}>
-//                     {route.label}
-//                 </Nav.Link>: null}
-//     ))}
-//

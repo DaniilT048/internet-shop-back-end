@@ -27,7 +27,6 @@ app.use(session({
     saveUninitialized: false,
     cookie: { maxAge: 1000 * 60 * 60 * 24 },
 }));
-app.use(cors());
 app.use(express.static(path.join(__dirname, '../public/images')));
 
 

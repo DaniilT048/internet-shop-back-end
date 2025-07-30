@@ -27,17 +27,31 @@ export const registerUser = async (req, res) => {
 };
 
 export const loginUser = async (req, res) => {
-    const { email, password } = req.body;
-    const existingUser = await User.findOne({ email });
-    if (!existingUser || existingUser.password !== password) {
-        return res.status(400).json({ message: 'Invalid credentials' });
+    try {
+        const { email, password } = req.body;
+        const existingUser = await User.findOne({ email });
+
+        if (!existingUser) {
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+
+        const isMatch = await bcrypt.compare(password, existingUser.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+
+        req.session.user = {
+            id: existingUser._id,
+            username: existingUser.username,
+            email: existingUser.email,
+        };
+
+        res.json({ message: 'Login successful', user: req.session.user });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error' });
     }
-    req.session.user = {
-        id: existingUser._id,
-        name: existingUser.name,
-        email: existingUser.email
-    };
-    req.json({message: 'Login successful', user: req.session.user});
 };
 
 export const requireAuth = async (req, res, next) => {

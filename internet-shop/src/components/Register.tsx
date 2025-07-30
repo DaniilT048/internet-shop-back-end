@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import {setUser} from "../store/authSlice.ts";
+import {useDispatch} from "react-redux";
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -8,6 +10,7 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -16,18 +19,23 @@ const Register = () => {
                 email,
                 password,
                 username
-            });
-
+            },{
+                withCredentials: true
+                }
+            );
             setMessage('User registered');
+
             if (res.data.user) {
-                localStorage.setItem("user", JSON.stringify(res.data.user));
+                dispatch(setUser(res.data.user));
+                navigate('/');
             } else {
                 console.warn("res.data.user is undefined", res.data);
             }
             navigate('/');
+
         } catch (err: any) {
             console.error('Register error', err.response?.data || err.message);
-            setMessage('Register error');
+            setMessage(err.response?.data?.message || 'Register error');
         }
     };
 
