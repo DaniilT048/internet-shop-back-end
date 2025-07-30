@@ -1,4 +1,4 @@
-import {type ReactElement, useState} from "react";
+import {type ReactElement, useEffect, useState} from "react";
 import Container from "react-bootstrap/Container";
 import {Carousel} from "react-bootstrap";
 import shop1 from "../assets/shopCarousel.jpg";
@@ -8,13 +8,34 @@ import shop3 from "../assets/shopSlider3.jpg";
 const Home = ():ReactElement => {
     document.title = "Home";
     const [index, setIndex] = useState(0);
+    const [userName, setUserName] = useState("");
+
+    useEffect(() => {
+        const userString = localStorage.getItem("user");
+        console.log("userString from localStorage:", userString);
+
+        if (userString && userString !== "undefined") {
+            try {
+                const user = JSON.parse(userString);
+                console.log("Parsed user:", user);
+
+                if (user?.username) {
+                    setUserName(user.username);
+                }
+            } catch (e) {
+                console.error("Ошибка при разборе JSON:", e);
+            }
+        }
+    }, []);
 
     const handleSelect = (selectedIndex:number) => {
         setIndex(selectedIndex);
     }
+
     return(
         <Container>
             <h1 className="text-center text">Welcome to Gym Store!</h1>
+            {userName && <h2 className="text-center">Hello, {userName}!</h2>}
 
             <Carousel activeIndex={index} onSelect={handleSelect}>
                 <Carousel.Item>
@@ -48,7 +69,7 @@ const Home = ():ReactElement => {
         </Container>
 
 
-);
+    );
 }
 
 

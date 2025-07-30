@@ -12,7 +12,14 @@ export const registerUser = async (req, res) => {
 
         const newUser = new User({ username, email, password: hashedPassword });
         await newUser.save();
-        res.status(201).json({ message: 'Registered successfully' });
+        res.status(201).json({ message: 'Registered successfully',
+            user: {
+                _id: newUser._id,
+                username: newUser.username,
+                email: newUser.email,
+            },
+        });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });

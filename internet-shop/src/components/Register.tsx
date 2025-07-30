@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -15,8 +17,14 @@ const Register = () => {
                 password,
                 username
             });
+
             setMessage('User registered');
-            console.log('Response:', res.data);
+            if (res.data.user) {
+                localStorage.setItem("user", JSON.stringify(res.data.user));
+            } else {
+                console.warn("res.data.user is undefined", res.data);
+            }
+            navigate('/');
         } catch (err: any) {
             console.error('Register error', err.response?.data || err.message);
             setMessage('Register error');
@@ -34,7 +42,7 @@ const Register = () => {
             />
             <input
                 type="email"
-                placeholder="email"
+                placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
