@@ -23,7 +23,7 @@ const Home = ():ReactElement => {
                     setUserName(user.username);
                 }
             } catch (e) {
-                console.error("Ошибка при разборе JSON:", e);
+                console.error("Error JSON:", e);
             }
         }
     }, []);
