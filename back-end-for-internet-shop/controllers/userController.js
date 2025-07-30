@@ -25,3 +25,39 @@ export const registerUser = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+export const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+    const existingUser = await User.findOne({ email });
+    if (!existingUser || existingUser.password !== password) {
+        return res.status(400).json({ message: 'Invalid credentials' });
+    }
+    req.session.user = {
+        id: existingUser._id,
+        name: existingUser.name,
+        email: existingUser.email
+    };
+    req.json({message: 'Login successful', user: req.session.user});
+};
+
+export const requireAuth = async (req, res, next) => {
+    if (!req.session.user) {
+        return res.status(401).json({ message: 'Not authenticated' });
+    }
+    next();
+};
+
+export const getCurrentUser = async (req, res) => {
+    if (!req.session.user) {
+        res.json(req.session.user);
+    }else{
+        res.status(400).json({message: 'Not authenticated'});
+    }
+};
+
+export const logoutUser = async (req, res) => {
+    req.session.destroy(() => {
+        res.clearCookie('connect.sid');
+        res.json({ message: 'Logged out' });
+    });
+}

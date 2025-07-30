@@ -7,7 +7,7 @@ import session from 'express-session';
 import { fileURLToPath } from 'url';
 import { dbConnect } from './db.js';
 import products from "../routes/api/products.js";
-import register from "../routes/api/register.js";
+import userRoutes from "../routes/api/userRoutes.js";
 
 
 dotenv.config();
@@ -24,14 +24,15 @@ app.use(cookieParser());
 app.use(session({
     secret: 'secret-key',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 },
 }));
 app.use(cors());
 app.use(express.static(path.join(__dirname, '../public/images')));
 
 
 app.use('/', products);
-app.use('/', register);
+app.use('/', userRoutes);
 
 await dbConnect();
 app.listen(PORT, () => {
