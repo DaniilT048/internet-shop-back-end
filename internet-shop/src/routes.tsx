@@ -47,17 +47,14 @@ routes = [
     {
         path: "/register",
         element: <Register/>,
-        label: null,
     },
     {
         path: "/login",
         element: <Login/>,
-        label: null,
     },
     {
         path: "/logout",
         element: <Logout/>,
-        label: null,
     }
     ];
 

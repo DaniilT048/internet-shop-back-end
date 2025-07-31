@@ -1,33 +1,17 @@
-import {type ReactElement, useEffect, useState} from "react";
+import {type ReactElement, useState} from "react";
 import Container from "react-bootstrap/Container";
 import {Carousel} from "react-bootstrap";
 import shop1 from "../assets/shopCarousel.jpg";
 import shop2 from "../assets/shopSlider2.jpg";
 import shop3 from "../assets/shopSlider3.jpg";
+import { useSelector} from "react-redux";
+import type {RootState} from "../store/store.ts";
 
 const Home = ():ReactElement => {
     document.title = "Home";
     const [index, setIndex] = useState(0);
-    const [userName, setUserName] = useState("");
-
-    useEffect(() => {
-        const userString = localStorage.getItem("user");
-        console.log("userString from localStorage:", userString);
-
-        if (userString && userString !== "undefined") {
-            try {
-                const user = JSON.parse(userString);
-                console.log("Parsed user:", user);
-
-                if (user?.username) {
-                    setUserName(user.username);
-                }
-            } catch (e) {
-                console.error("Error JSON:", e);
-            }
-        }
-    }, []);
-
+    const user = useSelector((state: RootState) => state.auth.user);
+    const userName = user?.username;
     const handleSelect = (selectedIndex:number) => {
         setIndex(selectedIndex);
     }
@@ -35,7 +19,7 @@ const Home = ():ReactElement => {
     return(
         <Container>
             <h1 className="text-center text">Welcome to Gym Store!</h1>
-            {userName && <h2 className="text-center">Hello, {userName}!</h2>}
+            { <h2 className="text-center">Hello {userName}!</h2>}
 
             <Carousel activeIndex={index} onSelect={handleSelect}>
                 <Carousel.Item>
@@ -44,8 +28,6 @@ const Home = ():ReactElement => {
                         src={shop1}
                         alt="First slide"
                     />
-                    <Carousel.Caption>
-                    </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item>
                     <img
@@ -53,8 +35,6 @@ const Home = ():ReactElement => {
                         src={shop2}
                         alt="Second slide"
                     />
-                    <Carousel.Caption>
-                    </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item>
                     <img
@@ -62,8 +42,6 @@ const Home = ():ReactElement => {
                         src={shop3}
                         alt="Third slide"
                     />
-                    <Carousel.Caption>
-                    </Carousel.Caption>
                 </Carousel.Item>
             </Carousel>
         </Container>
