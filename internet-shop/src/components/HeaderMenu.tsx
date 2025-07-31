@@ -4,17 +4,20 @@ import Navbar from 'react-bootstrap/Navbar';
 import type {JSX} from "react";
 import routes from "../routes.tsx";
 import { CgGym } from "react-icons/cg";
-import {Link, NavLink} from "react-router";
+import { Link, NavLink, useNavigate } from "react-router-dom"
 import {BsCart4} from "react-icons/bs";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Badge, Offcanvas} from 'react-bootstrap';
 import type {RootState} from '../store/store';
+import Button from "react-bootstrap/Button";
+import {clearUser} from "../store/authSlice.ts";
 
 function HeaderMenu(): JSX.Element {
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const totalQuantity = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
     const user = useSelector((state: RootState) => state.auth.user);
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     return (
         <Navbar className="mb-5"
             expand="lg"
@@ -42,7 +45,6 @@ function HeaderMenu(): JSX.Element {
                     className="bg-dark text-white"
                 >
                     <Offcanvas.Header closeButton closeVariant="white">
-                        <Offcanvas.Title id="offcanvasNavbarLabel">Меню</Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <Nav className="ms-auto text-white gap-3">
@@ -65,30 +67,32 @@ function HeaderMenu(): JSX.Element {
                                     <Badge
                                         bg="danger"
                                         pill
-                                        className="position-absolute top-0 start-100 translate-middle"
-                                    >
+                                        className="position-absolute top-0 start-100 translate-middle">
                                         {totalQuantity}
                                     </Badge>
                                 )}
                             </Nav.Link>
                             {user ? (
                                 <>
-                                    <Nav.Link as={NavLink} to="/profile">
-                                        {user ? (
-                                            <img
-                                                alt="avatar"
-                                                width={30}
-                                                height={30}
-                                                className="rounded-circle"
-                                            />
-                                        ) : (
-                                            'Profile'
-                                        )}
+                                    <Nav.Link  as={NavLink} to="/profile">
+                                        {user.username}
                                     </Nav.Link>
-                                    <Nav.Link as={NavLink} to="/logout">logout</Nav.Link>
+                                    <Button
+                                        variant="link"
+                                        onClick={() => {
+                                            dispatch(clearUser());
+                                            navigate('/');
+                                        }}
+                                        style={{ color: 'white', textDecoration: 'none' }}
+                                    >
+                                        Logout
+                                    </Button>
                                 </>
                             ) : (
-                                <Nav.Link as={NavLink} to="/login">login</Nav.Link>
+                                <>
+                                    <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
+                                    <Nav.Link as={NavLink} to="/register">Register</Nav.Link>
+                                </>
                             )}
                         </Nav>
                     </Offcanvas.Body>

@@ -6,7 +6,7 @@ import Cart from "./components/Cart.tsx";
 import Item from "./components/Item.tsx";
 import Register from "./components/Register.tsx";
 import Logout from "./components/Logout.tsx";
-import Login from "./components/Login..tsx";
+import Login from "./components/Login.tsx";
 
 
 
@@ -47,17 +47,17 @@ routes = [
     {
         path: "/register",
         element: <Register/>,
-        label: "Register",
+        label: null,
     },
     {
         path: "/login",
         element: <Login/>,
-        label: "Login",
+        label: null,
     },
     {
         path: "/logout",
         element: <Logout/>,
-        label: "Logout",
+        label: null,
     }
     ];
 
