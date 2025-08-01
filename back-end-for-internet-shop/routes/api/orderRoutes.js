@@ -4,7 +4,7 @@ import { requireAuth } from '../../controllers/userController.js';
 
 const router = express.Router();
 
-router.post('/orders', requireAuth, createOrder);
-router.get('/orders', requireAuth, getUserOrders);
+router.post('/api/orders', requireAuth, createOrder);
+router.get('/api/orders', requireAuth, getUserOrders);
 
 export default router;

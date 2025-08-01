@@ -4,6 +4,7 @@ import { incrementQty, decrementQty, removeFromCart, clearCart } from "../store/
 import Button from "react-bootstrap/Button";
 import { Container, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Cart = () => {
     const dispatch = useDispatch();
@@ -17,6 +18,27 @@ const Cart = () => {
         if (!product) return sum;
         return sum + item.quantity * product.price;
     }, 0);
+
+    const handleBuy = async () => {
+        const productsForOrder = cartItems.map(item => ({
+            productId: item._id,
+            quantity: item.quantity
+        }));
+
+        const orderData = {
+            products: productsForOrder,
+            totalPrice: total.toFixed(2)
+        };
+
+        try {
+            await axios.post('http://localhost:4000/api/orders', orderData, { withCredentials: true });
+            alert("Order placed!");
+            dispatch(clearCart());
+        } catch (err) {
+            console.error(err);
+            alert("Error placing order.");
+        }
+    };
 
     return (
         <Container>
@@ -47,7 +69,7 @@ const Cart = () => {
                         })}
                         <hr />
                         <h3>Total: ${total.toFixed(2)}</h3>
-                        <Button variant="success">Buy</Button>
+                        <Button variant="success" onClick={handleBuy}>Buy</Button>
                         <Button variant="danger" onClick={() => dispatch(clearCart())}>Clear Cart</Button>
                     </>
                 )}

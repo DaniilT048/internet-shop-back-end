@@ -41,7 +41,7 @@ export const loginUser = async (req, res) => {
         }
 
         req.session.user = {
-            id: existingUser._id,
+            _id: existingUser._id,
             username: existingUser.username,
             email: existingUser.email,
         };
@@ -62,10 +62,10 @@ export const requireAuth = async (req, res, next) => {
 };
 
 export const getCurrentUser = async (req, res) => {
-    if (!req.session.user) {
+    if (req.session.user) {
         res.json(req.session.user);
-    }else{
-        res.status(400).json({message: 'Not authenticated'});
+    } else {
+        res.status(401).json({ message: 'Not authenticated' });
     }
 };
 
