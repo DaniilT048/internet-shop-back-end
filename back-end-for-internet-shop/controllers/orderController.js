@@ -31,8 +31,8 @@ export const getUserOrders = async (req, res) => {
         if (!userId) return res.status(401).json({ message: "Unauthorized" });
 
         const orders = await Order.find({ user: userId })
-            .populate('products.productId');
-
+            .populate('products.product');
+            console.log(orders);
         res.json(orders);
     } catch (error) {
         console.error("Error fetching orders:", error);

@@ -49,7 +49,7 @@ const Profile = () => {
                         <ul>
                             {order.products.map((p: any, idx: number) => (
                                 <li key={idx}>
-                                    {p.productId?.name} — ${p.productId?.price} × {p.quantity}
+                                    {p.product?.name} — ${p.product?.price} × {p.quantity}
                                 </li>
                             ))}
                         </ul>

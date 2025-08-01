@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../store/authSlice';
 import { useNavigate } from 'react-router-dom';
+import Container from "react-bootstrap/Container";
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -31,12 +32,18 @@ const Login = () => {
     };
 
     return (
-        <form onSubmit={handleLogin}>
-            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            <button type="submit">Login</button>
-            {message && <p>{message}</p>}
-        </form>
+        <Container>
+            <form onSubmit={handleLogin} className="m-5">
+                <div>
+                    <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                </div>
+                <div>
+                    <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                </div>
+                <button type="submit">Login</button>
+                {message && <p>{message}</p>}
+            </form>
+        </Container>
     );
 };
 

@@ -9,6 +9,7 @@ import { dbConnect } from './db.js';
 import products from "../routes/api/products.js";
 import userRoutes from "../routes/api/userRoutes.js";
 import orderRoutes from "../routes/api/orderRoutes.js";
+import MongoStore from "connect-mongo";
 
 
 dotenv.config();
@@ -28,12 +29,15 @@ app.use(cors({
 app.use(session({
     secret: 'secret-key',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
         maxAge: 1000 * 60 * 60 * 24,
-        sameSite: 'lax',
         secure: false,
     },
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_CONNECTION,
+        collectionName: 'sessions',
+    }),
 }));
 app.use(express.static(path.join(__dirname, '../public/images')));
 
@@ -42,13 +46,6 @@ app.use('/', products);
 app.use('/', userRoutes);
 app.use('/', orderRoutes);
 
-app.get('/api/auth/me', (req, res) => {
-    if (req.session.user) {
-        res.json(req.session.user);
-    } else {
-        res.status(401).json({ message: 'Not authenticated' });
-    }
-});
 
 await dbConnect();
 app.listen(PORT, () => {

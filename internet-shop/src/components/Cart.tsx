@@ -21,7 +21,7 @@ const Cart = () => {
 
     const handleBuy = async () => {
         const productsForOrder = cartItems.map(item => ({
-            productId: item._id.toString,
+            product: item._id.toString(),
             quantity: item.quantity
         }));
 
@@ -29,7 +29,7 @@ const Cart = () => {
             products: productsForOrder,
             totalPrice: Number(total.toFixed(2))
         };
-
+        console.log(orderData);
         try {
             await axios.post('http://localhost:4000/api/orders', orderData, { withCredentials: true });
             alert("Order placed!");

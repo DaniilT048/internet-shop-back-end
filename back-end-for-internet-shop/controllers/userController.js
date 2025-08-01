@@ -45,7 +45,6 @@
                 username: existingUser.username,
                 email: existingUser.email,
             };
-
             res.json({ message: 'Login successful', user: req.session.user });
 
         } catch (err) {
@@ -55,7 +54,6 @@
     };
 
     export const requireAuth = async (req, res, next) => {
-        console.log('Session user:', req.session.user);
         if (req.session?.user?._id) {
             next();
         } else {
@@ -72,8 +70,16 @@
     };
 
     export const logoutUser = async (req, res) => {
-        req.session.destroy(() => {
-            res.clearCookie('connect.sid');
-            res.json({ message: 'Logged out' });
-        });
+        if (req.session) {
+            req.clearCookie('connect.sid');
+            req.session.destroy(err => {
+                if (err) {
+                    res.status(400).send('Unable to log out');
+                } else {
+                    res.send('Logout successful');
+                }
+            });
+        } else {
+            res.end();
+        }
     }

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import {setUser} from "../store/authSlice.ts";
 import {useDispatch} from "react-redux";
+import Container from "react-bootstrap/Container";
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -40,31 +41,39 @@ const Register = () => {
     };
 
     return (
-        <form onSubmit={handleRegister}>
-            <input
-                type="text"
-                placeholder="Name"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-            />
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
+        <Container>
+        <form onSubmit={handleRegister} className="m-5">
+            <div>
+                <input
+                    type="text"
+                    placeholder="Name"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
+            </div>
+            <div>
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+            </div>
+            <div>
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+            </div>
             <button type="submit">Register</button>
             {message && <p>{message}</p>}
         </form>
+        </Container>
     );
 };
 
