@@ -21,13 +21,13 @@ const Cart = () => {
 
     const handleBuy = async () => {
         const productsForOrder = cartItems.map(item => ({
-            productId: item._id,
+            productId: item._id.toString,
             quantity: item.quantity
         }));
 
         const orderData = {
             products: productsForOrder,
-            totalPrice: total.toFixed(2)
+            totalPrice: Number(total.toFixed(2))
         };
 
         try {

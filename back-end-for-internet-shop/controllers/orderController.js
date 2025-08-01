@@ -1,5 +1,10 @@
+import Order from '../models/Order.js';
+
 export const createOrder = async (req, res) => {
     const { products, totalPrice } = req.body;
+
+    console.log('Order request body:', req.body);
+    console.log('User ID from session:', req.session?.user?._id);
 
     if (!req.session?.user?._id) {
         return res.status(401).json({ message: "Unauthorized: user not logged in" });
@@ -21,15 +26,17 @@ export const createOrder = async (req, res) => {
 };
 
 export const getUserOrders = async (req, res) => {
-    if (!req.session?.user?._id) {
-        return res.status(401).json({ message: "Unauthorized: user not logged in" });
-    }
-
     try {
-        const orders = await Order.find({ user: req.session.user._id }).populate("products.productId");
+        const userId = req.session?.user?._id;
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+        const orders = await Order.find({ user: userId })
+            .populate('products.productId');
+
         res.json(orders);
-    } catch (err) {
-        console.error("Fetching orders error:", err);
-        res.status(500).json({ message: "Failed to fetch orders", error: err.message });
+    } catch (error) {
+        console.error("Error fetching orders:", error);
+        res.status(500).json({ message: "Server error" });
     }
 };
+

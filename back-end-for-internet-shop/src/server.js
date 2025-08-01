@@ -21,7 +21,7 @@ const __dirname = path.dirname(__filename);
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: true,
     credentials: true,
 }));
 
@@ -41,6 +41,14 @@ app.use(express.static(path.join(__dirname, '../public/images')));
 app.use('/', products);
 app.use('/', userRoutes);
 app.use('/', orderRoutes);
+
+app.get('/api/auth/me', (req, res) => {
+    if (req.session.user) {
+        res.json(req.session.user);
+    } else {
+        res.status(401).json({ message: 'Not authenticated' });
+    }
+});
 
 await dbConnect();
 app.listen(PORT, () => {
