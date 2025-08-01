@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Badge, Offcanvas} from 'react-bootstrap';
 import type {RootState} from '../store/store';
 import Button from "react-bootstrap/Button";
-import {clearUser} from "../store/authSlice.ts";
+import {logoutUser} from "../store/authSlice.ts";
 
 function HeaderMenu(): JSX.Element {
     const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -80,7 +80,7 @@ function HeaderMenu(): JSX.Element {
                                     <Button
                                         variant="link"
                                         onClick={() => {
-                                            dispatch(clearUser());
+                                            dispatch(logoutUser());
                                             navigate('/');
                                         }}
                                         style={{ color: 'white', textDecoration: 'none' }}

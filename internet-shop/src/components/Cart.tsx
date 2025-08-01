@@ -4,7 +4,7 @@ import { incrementQty, decrementQty, removeFromCart, clearCart } from "../store/
 import Button from "react-bootstrap/Button";
 import { Container, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import axios from '../utils/axiosInstance';
 
 const Cart = () => {
     const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const Cart = () => {
         };
         console.log(orderData);
         try {
-            await axios.post('http://localhost:4000/api/orders', orderData, { withCredentials: true });
+            await axios.post('api/orders', orderData);
             alert("Order placed!");
             dispatch(clearCart());
         } catch (err) {

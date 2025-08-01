@@ -4,15 +4,15 @@ export const createOrder = async (req, res) => {
     const { products, totalPrice } = req.body;
 
     console.log('Order request body:', req.body);
-    console.log('User ID from session:', req.session?.user?._id);
+    console.log('User ID from session:', req.user?._id);
 
-    if (!req.session?.user?._id) {
+    if (!req.user?._id) {
         return res.status(401).json({ message: "Unauthorized: user not logged in" });
     }
 
     try {
         const newOrder = new Order({
-            user: req.session.user._id,
+            user: req.user._id,
             products,
             totalPrice,
         });
@@ -27,7 +27,7 @@ export const createOrder = async (req, res) => {
 
 export const getUserOrders = async (req, res) => {
     try {
-        const userId = req.session?.user?._id;
+        const userId = req.user?._id;
         if (!userId) return res.status(401).json({ message: "Unauthorized" });
 
         const orders = await Order.find({ user: userId })

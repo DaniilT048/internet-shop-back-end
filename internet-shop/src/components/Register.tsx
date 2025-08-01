@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from "react-router-dom";
-import {setUser} from "../store/authSlice.ts";
-import {useDispatch} from "react-redux";
-import Container from "react-bootstrap/Container";
+import axios from '../utils/axiosInstance';
+import { useNavigate } from 'react-router-dom';
+import { setUser } from '../store/authSlice';
+import { useDispatch } from 'react-redux';
+import Container from 'react-bootstrap/Container';
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -16,24 +16,19 @@ const Register = () => {
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:4000/api/register', {
+            const res = await axios.post('/api/register', {
                 email,
                 password,
-                username
-            },{
-                withCredentials: true
-                }
-            );
-            setMessage('User registered');
+                username,
+            });
 
-            if (res.data.user) {
+            if (res.data.user && res.data.token) {
+                localStorage.setItem('token', res.data.token);
                 dispatch(setUser(res.data.user));
                 navigate('/');
             } else {
-                console.warn("res.data.user is undefined", res.data);
+                setMessage('Unexpected response from server');
             }
-            navigate('/');
-
         } catch (err: any) {
             console.error('Register error', err.response?.data || err.message);
             setMessage(err.response?.data?.message || 'Register error');
@@ -42,37 +37,37 @@ const Register = () => {
 
     return (
         <Container>
-        <form onSubmit={handleRegister} className="m-5">
-            <div>
-                <input
-                    type="text"
-                    placeholder="Name"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                />
-            </div>
-            <div>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-            </div>
-            <div>
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-            </div>
-            <button type="submit">Register</button>
-            {message && <p>{message}</p>}
-        </form>
+            <form onSubmit={handleRegister} className="m-5">
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Name"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <button type="submit">Register</button>
+                {message && <p>{message}</p>}
+            </form>
         </Container>
     );
 };

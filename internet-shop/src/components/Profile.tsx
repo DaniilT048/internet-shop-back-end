@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/store";
 import Container from "react-bootstrap/Container";
-import axios from "axios";
+import axios from '../utils/axiosInstance';
 
 const Profile = () => {
     const user = useSelector((state: RootState) => state.auth.user);
@@ -13,14 +13,16 @@ const Profile = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const res = await axios.get("http://localhost:4000/api/orders/me", {
-                    withCredentials: true,
+                const res = await axios.get("/api/orders/me", {
                 });
-                console.log(res.data);
                 setOrders(res.data);
             } catch (err: any) {
                 console.error("Error fetching orders:", err);
-                setError("Failed to load your orders");
+                if (err.response?.status === 401) {
+                    setError("You must be logged in to view your orders.");
+                } else {
+                    setError("Failed to load your orders");
+                }
             } finally {
                 setLoading(false);
             }
