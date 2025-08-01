@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import { dbConnect } from './db.js';
 import products from "../routes/api/products.js";
 import userRoutes from "../routes/api/userRoutes.js";
+import orderRoutes from "../routes/api/orderRoutes.js";
 
 
 dotenv.config();
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, '../public/images')));
 
 app.use('/', products);
 app.use('/', userRoutes);
+app.use('/', orderRoutes);
 
 await dbConnect();
 app.listen(PORT, () => {
