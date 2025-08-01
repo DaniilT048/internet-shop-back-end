@@ -7,6 +7,7 @@ import Item from "./components/Item.tsx";
 import Register from "./components/Register.tsx";
 import Logout from "./components/Logout.tsx";
 import Login from "./components/Login.tsx";
+import Profile from "./components/Profile.tsx";
 
 
 
@@ -55,7 +56,11 @@ routes = [
     {
         path: "/logout",
         element: <Logout/>,
-    }
+    },
+    {
+        path: "/profile",
+        element: <Profile/>,
+    },
     ];
 
 export default routes;

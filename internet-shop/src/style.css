@@ -185,6 +185,11 @@ a {
     color: #ff6b6b !important;
 }
 
+.active{
+    color: #ff6b6b !important;
+}
+
+
 .navbar {
     transition: all 0.3s ease;
 }

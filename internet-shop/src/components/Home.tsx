@@ -19,7 +19,7 @@ const Home = ():ReactElement => {
     return(
         <Container>
             <h1 className="text-center text">Welcome to Gym Store!</h1>
-            { <h2 className="text-center">Hello {userName}!</h2>}
+            {userName && <h2 className="text-center">Hello, {userName}!</h2>}
 
             <Carousel activeIndex={index} onSelect={handleSelect}>
                 <Carousel.Item>
