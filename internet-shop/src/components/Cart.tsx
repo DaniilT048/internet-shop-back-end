@@ -5,11 +5,20 @@ import Button from "react-bootstrap/Button";
 import { Container, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from '../utils/axiosInstance';
+import {useEffect} from "react";
+import {fetchProducts} from "../store/productsSlice.ts";
 
 const Cart = () => {
     const dispatch = useDispatch();
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const products = useSelector((state: RootState) => state.products.items);
+
+    useEffect(() => {
+        if (products.length === 0) {
+            // @ts-ignore
+            dispatch(fetchProducts());
+        }
+    }, [dispatch, products.length]);
 
     const getProduct = (_id: number) => products.find(p => p._id === _id);
 
