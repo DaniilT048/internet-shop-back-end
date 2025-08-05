@@ -3,9 +3,6 @@ import Order from '../models/Order.js';
 export const createOrder = async (req, res) => {
     const { products, totalPrice } = req.body;
 
-    console.log('Order request body:', req.body);
-    console.log('User ID from session:', req.user?._id);
-
     if (!req.user?._id) {
         return res.status(401).json({ message: "Unauthorized: user not logged in" });
     }
