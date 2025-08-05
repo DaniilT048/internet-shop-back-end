@@ -1,4 +1,5 @@
-import Cart from '../models/Cart';
+import Cart from "../models/Cart.js";
+
 
 export const getUserCart = async (req, res) => {
     try {
