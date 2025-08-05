@@ -36,7 +36,7 @@ export const deleteItemFromCart = async (req, res) => {
         if(!cart){
             res.status(404).json({error: 'Cart is not found'})
         }
-        cart.items = cart.items.filter(item => item.productId !== req.productId)
+        cart.items = cart.items.filter(item => item.productId.toString() !== req.productId.toString())
         await cart.save()
         res.json(cart)
     }catch (err){
@@ -66,5 +66,18 @@ export const deleteOneItemFromCart = async (req, res) => {
     }
 }
 
+export const clearCart = async (req, res) => {
+    try{
+        let cart = await Cart.findOne({userId: req.userId})
+        if(!cart) {
+            res.status(404).json({error: 'Cart is not found'})
+        }
+        cart.items = []
+        await cart.save()
+        res.json(cart)
+    }catch(err){
+            res.status(500).json({error: 'failed to delete one item'})
+    }
+}
 
 
