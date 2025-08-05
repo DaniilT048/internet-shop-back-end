@@ -9,11 +9,11 @@ import {requireAuth} from "../../controllers/userController.js";
 
 const cartRoutes = express.Router();
 
-cartRoutes.get('/api/cart', requireAuth, getUserCart)
-cartRoutes.put('/api/addToCart', requireAuth, addItemToCart)
-cartRoutes.delete('/api/deleteItem', requireAuth, deleteItemFromCart)
-cartRoutes.delete('/api/deleteOneItem', requireAuth, deleteOneItemFromCart)
-cartRoutes.delete('/api/clearCart', requireAuth, clearCart)
+cartRoutes.get('/api/cart/get', requireAuth, getUserCart)
+cartRoutes.put('/api/cart/add', requireAuth, addItemToCart)
+cartRoutes.delete('/api/cart/deleteItem', requireAuth, deleteItemFromCart)
+cartRoutes.delete('/api/cart/deleteOneItem', requireAuth, deleteOneItemFromCart)
+cartRoutes.delete('/api/cart/clear', requireAuth, clearCart)
 
 
 export default cartRoutes;
