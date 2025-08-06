@@ -1,4 +1,12 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, type PayloadAction} from "@reduxjs/toolkit";
+import axios from '../utils/axiosInstance';
+
+export const fetchCard = createAsyncThunk(
+    'card/get',
+    async () => {
+        return await axios.get('api/cart/get')
+    }
+)
 
 type CartItem = {
     _id: number;

@@ -1,13 +1,14 @@
-import {type ChangeEvent, type ReactElement, useEffect } from "react";
+import {type ChangeEvent, type ReactElement, useEffect} from "react";
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import ShopCard from "./ShopCard";
-import { Category } from "../types/Category";
-import { useLocation, useNavigate } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../store/productsSlice";
-import type { Product } from "../types/Product";
-import type { RootState } from "../store/store";
+import {Category} from "../types/Category";
+import {useLocation, useNavigate} from "react-router";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchProducts} from "../store/productsSlice";
+import type {Product} from "../types/Product";
+import type {RootState} from "../store/store";
+import {Col, Row} from "react-bootstrap";
 
 const Products = (): ReactElement => {
     document.title = "Shop";
@@ -16,7 +17,7 @@ const Products = (): ReactElement => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { items: products, loading, error } = useSelector((state: RootState) => state.products);
+    const {items: products, loading, error} = useSelector((state: RootState) => state.products);
 
     const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
         const selectedCategory = event.target.value;
@@ -50,27 +51,33 @@ const Products = (): ReactElement => {
 
     return (
         <Container>
-            <h4>Choose category:</h4>
-            <Form.Select className="mb-4" onChange={handleCategoryChange} value={new URLSearchParams(location.search).get('category') || Category.ALL}>
+            <h1 className="text-center">Shop</h1>
+            <Row className="">
+                <Col>
+            <Form.Select onChange={handleCategoryChange}
+                         value={new URLSearchParams(location.search).get('category') || Category.ALL}>
                 <option value={Category.ALL}>All products</option>
                 <option value={Category.BALLS}>Balls</option>
                 <option value={Category.DUMBBELLS}>Dumbbells</option>
                 <option value={Category.MATS}>Mats</option>
                 <option value={Category.ACCESSORIES}>Accessories</option>
             </Form.Select>
-
-            <Form.Select className="mb-4" onChange={handleSortChange} value={new URLSearchParams(location.search).get('sort') || ''}>
+                </Col>
+                <Col>
+            <Form.Select className="mb-4" onChange={handleSortChange}
+                         value={new URLSearchParams(location.search).get('sort') || ''}>
                 <option value="">Sort by</option>
                 <option value="asc">Price: Low to High</option>
                 <option value="desc">Price: High to Low</option>
             </Form.Select>
-
+                </Col>
+            </Row>
             {loading && <p>Loading...</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{color: 'red'}}>{error}</p>}
             {!loading && !error && (
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+                <div style={{display: 'flex', flexWrap: 'wrap', gap: 16}}>
                     {products.map((product: Product) => (
-                        <ShopCard key={product._id} product={product} />
+                        <ShopCard key={product.id} product={product}/>
                     ))}
                 </div>
             )}

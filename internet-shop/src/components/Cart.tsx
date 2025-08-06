@@ -52,7 +52,7 @@ const Cart = () => {
     return (
         <Container>
             <Row>
-                <h2 className="text-center">Cart</h2>
+                <h1 className="text-center">Cart</h1>
                 {cartItems.length === 0 ? (
                     <p>Your cart is empty</p>
                 ) : (

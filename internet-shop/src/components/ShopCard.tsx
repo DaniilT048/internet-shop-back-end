@@ -16,11 +16,11 @@ function ShopCard({ product }: ProductProps): JSX.Element {
     const [modalShow, setModalShow] = useState(false);
     return (
         <Card className="shopCard">
-            <Link to={`/products/${product._id}`}>
+            <Link to={`/products/${product.id}`}>
             <Card.Img variant="top" src={`http://localhost:4000/${product.image}`} alt={product.name} style={{ height: '200px', objectFit: 'contain' }}  />
             </Link>
             <Card.Body className="text-center">
-                <Link to={`/products/${product._id}`}>
+                <Link to={`/products/${product.id}`}>
                 <Card.Title style={{whiteSpace: 'nowrap',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis'}}>
@@ -28,7 +28,7 @@ function ShopCard({ product }: ProductProps): JSX.Element {
                 </Card.Title>
                 </Link>
                 <Card.Text >${product.price.toFixed(2)}</Card.Text>
-                <Button variant="success" onClick={() => dispatch(addToCart(product._id)) && setModalShow(true)}>Add to Cart</Button>
+                <Button variant="success" onClick={() => dispatch(addToCart(product.id)) && setModalShow(true)}>Add to Cart</Button>
                 <ModalCart
                     show={modalShow}
                     onHide={() => setModalShow(false)}
