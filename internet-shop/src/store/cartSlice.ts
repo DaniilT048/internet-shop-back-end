@@ -43,6 +43,7 @@ export const clearCart = createAsyncThunk(
     }
 )
 
+
 type CartItem = {
     productId: string;
     quantity: number;
@@ -54,7 +55,7 @@ type CartState = {
     error: string | null;
 }
 
-const initialCart = JSON.parse(localStorage.getItem("cart") || "[]");
+const initialCart: CartItem[] = []
 
 const initialState: CartState = {
     items: initialCart,
@@ -66,35 +67,15 @@ const initialState: CartState = {
 const cartSlice = createSlice({
     name: "cart",
     initialState,
-    reducers: {},
+    reducers: {
+        resetCart: (state) => {
+            state.items = [];
+            state.loading = false;
+            state.error = null;
+        }
+    },
     extraReducers: builder => {
         builder
-            .addCase(fetchCart.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(fetchCart.fulfilled, (state, action) => {
-                state.loading = false;
-                state.items = action.payload.items;
-                console.log('items,', state)
-            })
-            .addCase(fetchCart.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.error.message || 'Error download cart';
-            })
-            .addCase(addItem.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(addItem.fulfilled, (state, action) => {
-                state.loading = false;
-                state.items = action.payload.items;
-                console.log('items,', state)
-            })
-            .addCase(addItem.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.error.message || 'Error added to cart';
-            })
             .addMatcher(isPending(fetchCart, addItem, deleteItem, deleteOneItem, clearCart), (state) => {
                 state.loading = true;
                 state.error = null;
@@ -102,7 +83,6 @@ const cartSlice = createSlice({
             .addMatcher(isFulfilled(fetchCart, addItem, deleteItem, deleteOneItem, clearCart), (state, action) => {
                 state.loading = false;
                 state.items = action.payload.items;
-                console.log('items,', state)
             })
             .addMatcher(isRejected(fetchCart, addItem, deleteItem, deleteOneItem, clearCart), (state, action) =>{
                 state.loading = false;
@@ -110,5 +90,6 @@ const cartSlice = createSlice({
             })
     }
 })
-export const {addToCart, removeFromCart, incrementQty, decrementQty,} = cartSlice.actions;
+
+export const {resetCart} = cartSlice.actions;
 export default cartSlice.reducer;

@@ -1,15 +1,20 @@
 import { useParams } from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import {addToCart} from "../store/cartSlice.ts";
 import ModalCart from "./ModalCart.tsx";
 import {useDispatch, useSelector} from "react-redux";
-import type {RootState} from "../store/store.ts";
+import type {AppDispatch, RootState} from "../store/store.ts";
+import {addItem} from "../store/cartSlice.ts";
+import {fetchProducts} from "../store/productsSlice.ts";
 
 const Item = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const [modalShow, setModalShow] = useState(false);
     const { id } = useParams<{ id: string }>();
     const products = useSelector((state: RootState) => state.products.items);
+
+    useEffect(() => {
+        dispatch(fetchProducts({}))
+    }, [dispatch]);
 
 
     const product = products.find(p => p._id === id);
@@ -19,6 +24,11 @@ const Item = () => {
             document.title = product.name;
         }
     }, [product]);
+
+    const handleAddEvent = () =>{
+        dispatch(addItem(product._id));
+        setModalShow(true)
+    }
 
 
     if (!product) return <h2>Product not found</h2>;
@@ -30,7 +40,7 @@ const Item = () => {
                     <div className="position-relative">
                         <img
                             src={`http://localhost:4000/${product.image}`}
-                            alt={product.name}
+                             alt={product.name}
                             className="img-fluid rounded shadow-lg"
                             style={{ transition: "transform 0.3s", height: '500px', objectFit: 'contain' }}
                             onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.05)")}
@@ -47,7 +57,7 @@ const Item = () => {
                     <p className="lead">{product.description}</p>
 
                     <div className="d-flex gap-3 mt-4">
-                        <button className="btn btn-dark btn-lg shadow-sm" onClick={() => dispatch(addToCart(product._id)) && setModalShow(true)}>
+                        <button className="btn btn-dark btn-lg shadow-sm" onClick={handleAddEvent}>
                             <i className="bi bi-cart-plus"></i> Add to Cart
                         </button>
                     </div>

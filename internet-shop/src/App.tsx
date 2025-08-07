@@ -47,6 +47,7 @@ const App = () => {
         fetchCurrentUser();
     }, [dispatch]);
 
+
     return <RouterProvider router={router} />;
 };
 

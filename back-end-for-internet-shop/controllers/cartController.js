@@ -7,7 +7,8 @@ export const getUserCart = async (req, res) => {
         let cart = await Cart.findOne({userId: req.user._id.toString()})
 
         if (!cart) {
-            cart = new Cart({userId: req.user._id.toString(), items: []});}
+            cart = new Cart({userId: req.user._id.toString(), items: []});
+        }
         await cart.save()
         res.json(cart);
 
@@ -26,64 +27,63 @@ export const addItemToCart = async (req, res) => {
             if (itemIndex > -1) {
                 cart.items[itemIndex].quantity += 1;
             } else {
-                cart.items.push({productId: req.body.productId , quantity: 1});
+                cart.items.push({productId: req.body.productId, quantity: 1});
             }
         }
         await cart.save()
         res.json(cart)
     } catch (err) {
-        console.error('test 2', err)
         res.status(500).json({error: 'Failed to add cart', err});
     }
 }
 
 export const deleteItemFromCart = async (req, res) => {
-    try{
-        let cart = await Cart.findOne({userId: req.userId})
-        if(!cart){
+    try {
+        let cart = await Cart.findOne({userId: req.user._id.toString()})
+        if (!cart) {
             res.status(404).json({error: 'Cart is not found'})
         }
-        cart.items = cart.items.filter(item => item.productId.toString() !== req.productId.toString())
+        cart.items = cart.items.filter(item => item.productId.toString() !== req.body.productId.toString())
         await cart.save()
         res.json(cart)
-    }catch (err){
+    } catch (err) {
         res.status(500).json({error: 'failed to delete item'})
     }
 }
 
 export const deleteOneItemFromCart = async (req, res) => {
-    try{
-        let cart = await Cart.findOne({userId: req.userId})
-        if(!cart){
+    try {
+        let cart = await Cart.findOne({userId: req.user._id.toString()})
+        if (!cart) {
             res.status(404).json({error: 'Cart is not found'})
         }
-        const deleteIndex = cart.items.findIndex(item => item.productId.toString() === req.productId.toString())
-        if(deleteIndex === -1){
+        const deleteIndex = cart.items.findIndex(item => item.productId.toString() === req.body.productId.toString())
+        if (deleteIndex === -1) {
             res.status(404).json('product not found in cart')
         }
-        if(cart.items[deleteIndex].quantity === 1){
+        if (cart.items[deleteIndex].quantity === 1) {
             cart.items.splice(deleteIndex, 1)
-        }else{
+        } else {
             cart.items[deleteIndex].quantity -= 1
         }
         await cart.save()
         res.json(cart)
-    }catch(err){
+    } catch (err) {
         res.status(500).json({error: 'failed to delete one item'})
     }
 }
 
 export const clearCart = async (req, res) => {
-    try{
+    try {
         let cart = await Cart.findOne({userId: req.user._id.toString()})
-        if(!cart) {
+        if (!cart) {
             res.status(404).json({error: 'Cart is not found'})
         }
         cart.items = []
         await cart.save()
         res.json(cart)
-    }catch(err){
-            res.status(500).json({error: 'failed to delete one item'})
+    } catch (err) {
+        res.status(500).json({error: 'failed to delete one item'})
     }
 }
 

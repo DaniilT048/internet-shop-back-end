@@ -77,7 +77,7 @@ const Products = (): ReactElement => {
             {!loading && !error && (
                 <div style={{display: 'flex', flexWrap: 'wrap', gap: 16}}>
                     {products.map((product: Product) => (
-                        <ShopCard key={product.id} product={product}/>
+                        <ShopCard key={product._id} product={product}/>
                     ))}
                 </div>
             )}

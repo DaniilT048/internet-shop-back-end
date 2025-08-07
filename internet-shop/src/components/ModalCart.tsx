@@ -1,6 +1,11 @@
 import { useSelector, useDispatch } from "react-redux";
-import type { RootState } from "../store/store";
-import { incrementQty, decrementQty, removeFromCart, clearCart } from "../store/cartSlice";
+import type {AppDispatch, RootState} from "../store/store";
+import {
+    clearCart,
+    deleteOneItem,
+    addItem,
+    deleteItem
+} from "../store/cartSlice";
 import Button from "react-bootstrap/Button";
 import { Modal, type ModalProps } from "react-bootstrap";
 import { useNavigate } from "react-router";
@@ -11,7 +16,7 @@ interface CartProps extends ModalProps {
 }
 
 const Cart = (props: CartProps) => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 
 
@@ -19,10 +24,10 @@ const Cart = (props: CartProps) => {
     const products = useSelector((state: RootState) => state.products.items);
 
 
-    const getProduct = (_id: number) => products.find((p) => p._id === _id);
+    const getProduct = (_id: string) => products.find((p) => p._id === _id);
 
     const total = cartItems.reduce((sum, item) => {
-        const product = getProduct(item._id);
+        const product = getProduct(item.productId);
         if (!product) return sum;
         return sum + item.quantity * product.price;
     }, 0);
@@ -44,12 +49,12 @@ const Cart = (props: CartProps) => {
             <Modal.Body>
                 {cartItems.length === 0 && <p>Your cart is empty</p>}
 
-                {cartItems.map(({ _id, quantity }) => {
-                    const product = getProduct(_id);
+                {cartItems.map(({ productId, quantity }) => {
+                    const product = getProduct(productId);
                     if (!product) return null;
 
                     return (
-                        <div key={_id}>
+                        <div key={productId}>
                             <h4>{product.name}</h4>
                             <p>Quantity: {quantity}</p>
                             <p>Price: ${product.price}</p>
@@ -57,21 +62,21 @@ const Cart = (props: CartProps) => {
                             <Button
                                 className="m-3"
                                 variant="danger"
-                                onClick={() => dispatch(decrementQty(_id))}
+                                onClick={() => dispatch(deleteOneItem(productId))}
                             >
                                 -
                             </Button>
                             <Button
                                 className="m-3"
                                 variant="success"
-                                onClick={() => dispatch(incrementQty(_id))}
+                                onClick={() => dispatch(addItem(productId))}
                             >
                                 +
                             </Button>
                             <Button
                                 className="m-3"
                                 variant="warning"
-                                onClick={() => dispatch(removeFromCart(_id))}
+                                onClick={() => dispatch(deleteItem(productId))}
                             >
                                 Remove
                             </Button>

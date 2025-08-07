@@ -60,20 +60,19 @@ function HeaderMenu(): JSX.Element {
                                         {route.label}
                                     </Nav.Link>
                                 ))}
-
-                            <Nav.Link as={NavLink} to="/cart" className="position-relative">
-                                <BsCart4 size={24} />
-                                {totalQuantity > 0 && (
-                                    <Badge
-                                        bg="danger"
-                                        pill
-                                        className="position-absolute top-0 start-100 translate-middle">
-                                        {totalQuantity}
-                                    </Badge>
-                                )}
-                            </Nav.Link>
                             {user ? (
                                 <>
+                                    <Nav.Link as={NavLink} to="/cart" className="position-relative">
+                                        <BsCart4 size={24} />
+                                        {totalQuantity > 0 && (
+                                            <Badge
+                                                bg="danger"
+                                                pill
+                                                className="position-absolute top-0 start-100 translate-middle">
+                                                {totalQuantity}
+                                            </Badge>
+                                        )}
+                                    </Nav.Link>
                                     <Nav.Link  as={NavLink} to="/profile">
                                         {user.username}
                                     </Nav.Link>
