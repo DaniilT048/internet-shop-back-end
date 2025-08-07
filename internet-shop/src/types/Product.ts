@@ -1,7 +1,7 @@
 import type {Category} from "./Category.ts";
 
 export type Product = {
-    id: number;
+    _id: string;
     name: string;
     image: string;
     price: number;
