@@ -14,10 +14,6 @@ export async function getProducts(req, res) {
         const products = await Product.find(filter).sort(sortOption).lean();
 
         res.json(products);
-        console.log('Category:', category);
-        console.log('Sort:', sort);
-        console.log('Filter:', filter);
-        console.log('SortOption:', sortOption);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });

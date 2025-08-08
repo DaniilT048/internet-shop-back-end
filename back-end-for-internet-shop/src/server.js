@@ -8,6 +8,7 @@ import products from "../routes/api/products.js";
 import userRoutes from "../routes/api/userRoutes.js";
 import orderRoutes from "../routes/api/orderRoutes.js";
 import cartRoutes from "../routes/api/cartRoutes.js";
+import adminPanelRoutes from "../routes/api/adminPanelRoutes.js";
 
 
 dotenv.config();
@@ -30,6 +31,7 @@ app.use('/', products);
 app.use('/', userRoutes);
 app.use('/', orderRoutes);
 app.use('/', cartRoutes)
+app.use('/', adminPanelRoutes)
 
 await dbConnect();
 app.listen(PORT, () => {
