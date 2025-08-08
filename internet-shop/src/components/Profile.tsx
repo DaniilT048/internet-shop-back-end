@@ -16,6 +16,7 @@ const Profile = () => {
                 const res = await axios.get("/api/orders/me", {
                 });
                 setOrders(res.data);
+                console.log(res.data);
             } catch (err: any) {
                 console.error("Error fetching orders:", err);
                 if (err.response?.status === 401) {
@@ -49,11 +50,12 @@ const Profile = () => {
                         <h4>Order on: {new Date(order.createdAt).toLocaleString()}</h4>
                         <p><strong>Total price:</strong> ${order.totalPrice}</p>
                         <ul>
-                            {order.products.map((p: any, idx: number) => (
-                                <li key={idx}>
+                            {order.products.map((p: any, id: number) => (
+                                <li key={id}>
                                     {p.product?.name} — ${p.product?.price} × {p.quantity}
                                 </li>
                             ))}
+                            <h3>{order.status}</h3>
                         </ul>
                     </div>
                 ))

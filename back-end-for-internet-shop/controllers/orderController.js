@@ -1,4 +1,5 @@
 import Order from '../models/Order.js';
+import Status from "../models/OrderStatus.js";
 
 export const createOrder = async (req, res) => {
     const { products, totalPrice } = req.body;
@@ -12,6 +13,7 @@ export const createOrder = async (req, res) => {
             user: req.user._id,
             products,
             totalPrice,
+            status: Status.PENDING,
         });
 
         await newOrder.save();
